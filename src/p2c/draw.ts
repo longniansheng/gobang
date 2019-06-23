@@ -35,6 +35,7 @@ function drawPiece(
       g.addColorStop(0, '#D1D1D1');
       g.addColorStop(1, '#F9F9F9');
     }
+    context.fillStyle = g;
     context.fill();
     context.closePath();
   }

@@ -1,10 +1,20 @@
 import { useRef, useEffect, useReducer } from 'react';
-import { drawCheckerboard, drawPiece } from './draw';
+import { drawCheckerboard } from './draw';
 import reducer from './canvasReducer';
+import { Action, Gobang } from './types';
+import { DEFAULT_GAMEDATA } from './constants';
 
-function useCanvasHooks(): [React.RefObject<HTMLCanvasElement>] {
+function useCanvasHooks(): [
+  React.RefObject<HTMLCanvasElement>,
+  Gobang,
+  React.Dispatch<Action>
+] {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(reducer, {
+    gameData: DEFAULT_GAMEDATA,
+    self: true,
+    gameOver: false
+  });
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -19,7 +29,10 @@ function useCanvasHooks(): [React.RefObject<HTMLCanvasElement>] {
       const { offsetX, offsetY } = e;
       console.log(offsetX, offsetY);
       if (canvasRef.current) {
-        drawPiece(canvasRef.current, offsetX, offsetY);
+        dispatch({
+          type: 'KEY_DOWN',
+          payload: { offsetX, offsetY, canvas: canvasRef.current }
+        });
       }
     };
     if (canvasRef.current) {
@@ -32,7 +45,17 @@ function useCanvasHooks(): [React.RefObject<HTMLCanvasElement>] {
     }
   }, []);
 
-  return [canvasRef];
+  useEffect(() => {
+    if (state.gameOver) {
+      if (state.self) {
+        alert('你赢了');
+      } else {
+        alert('你输了');
+      }
+    }
+  }, [state.gameOver, state.self]);
+
+  return [canvasRef, state, dispatch];
 }
 
 export default useCanvasHooks;
