@@ -13,8 +13,8 @@ function handleKeydown(draft: Gobang, action: Action) {
   }
   drawPiece(canvas, offsetX, offsetY, self);
   draft.gameData[posX][posY] = self ? 1 : 2;
-  draft.self = !draft.self;
   const gameOver = checkGameOver(draft.gameData, posX, posY, self);
+  draft.self = gameOver ? draft.self : !draft.self;
   draft.gameOver = gameOver;
   return draft;
 }
