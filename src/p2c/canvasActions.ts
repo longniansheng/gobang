@@ -1,6 +1,7 @@
 import { Gobang, Action } from './types';
 import posToGameDataIndex from './posToGameDataIndex';
 import { drawPiece } from './draw';
+import checkGameOver from './checkGameOver';
 
 function handleKeydown(draft: Gobang, action: Action) {
   const { self, gameData } = draft;
@@ -13,6 +14,8 @@ function handleKeydown(draft: Gobang, action: Action) {
   drawPiece(canvas, offsetX, offsetY, self);
   draft.gameData[posX][posY] = self ? 1 : 2;
   draft.self = !draft.self;
+  const gameOver = checkGameOver(draft.gameData, posX, posY, self);
+  draft.gameOver = gameOver;
   return draft;
 }
 

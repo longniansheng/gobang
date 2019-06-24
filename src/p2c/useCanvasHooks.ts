@@ -10,7 +10,7 @@ function useCanvasHooks(): [
   React.Dispatch<Action>
 ] {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [state, dispatch] = useReducer(reducer, {
+  const [{ gameData, self, gameOver }, dispatch] = useReducer(reducer, {
     gameData: DEFAULT_GAMEDATA,
     self: true,
     gameOver: false
@@ -46,16 +46,16 @@ function useCanvasHooks(): [
   }, []);
 
   useEffect(() => {
-    if (state.gameOver) {
-      if (state.self) {
+    if (gameOver) {
+      if (self) {
         alert('你赢了');
       } else {
         alert('你输了');
       }
     }
-  }, [state.gameOver, state.self]);
+  }, [gameOver, self]);
 
-  return [canvasRef, state, dispatch];
+  return [canvasRef, { gameData, self, gameOver }, dispatch];
 }
 
 export default useCanvasHooks;
