@@ -4,6 +4,9 @@ import { drawPiece } from './draw';
 import checkGameOver from './checkGameOver';
 
 function handleKeydown(draft: Gobang, action: Action) {
+  if (draft.gameOver) {
+    return draft;
+  }
   const { self, gameData } = draft;
   const { offsetX, offsetY, canvas } = action.payload;
 
